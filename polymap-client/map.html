@@ -35,7 +35,12 @@
 
 	$(function() {
 		$('#map_canvas').areaMap({
-			'boundaries': 'country'
+			'boundaries': 'country',
+			'styles': [
+				{'max': 1.0, 'fillColour': '#0000ff'},
+				{'max': 2.0, 'fillColour': '#00ff00'},
+				{'max': 5.0, 'fillColour': '#ff0000'}
+			]
 		})
 	})
 

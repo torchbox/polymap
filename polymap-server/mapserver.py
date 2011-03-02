@@ -1,5 +1,6 @@
 import cgi
 import os
+import re
 import hashlib
 from xml import sax
 
@@ -32,7 +33,7 @@ class JmlParser(sax.handler.ContentHandler):
 	def startElement(self, name, attrs):
 		if (name == 'feature'):
 			self.in_feature = True
-			self.output.write('<Placemark><visibility>1</visibility><styleUrl>#defaultstyle</styleUrl>')
+			self.output.write('<Placemark><visibility>1</visibility><styleUrl>#style_0</styleUrl>')
 			self.feature_name = None
 			self.feature_id = None
 		
@@ -53,7 +54,7 @@ class JmlParser(sax.handler.ContentHandler):
 	
 	def characters(self, content):
 		if self.in_geometry:
-			self.output.write(content)
+			self.output.write(cgi.escape(content))
 		else:
 			if self.in_name_property:
 				self.feature_name = content
@@ -80,6 +81,12 @@ class JmlParser(sax.handler.ContentHandler):
 		elif self.in_geometry and name.startswith('gml:'):
 			self.output.write('</%s>' % name[4:])
 
+def html_colour_to_abgr(html_colour, alpha):
+	match = re.match(r"#(..)(..)(..)", html_colour)
+	if match:
+		r, g, b = match.groups()
+		return "%s%s%s%s" % (alpha, b, g, r)
+
 class Map(db.Model):
 	hash = db.StringProperty(required = True)
 	description = db.TextProperty()
@@ -94,23 +101,16 @@ class Map(db.Model):
 		output.write('<?xml version="1.0" encoding="UTF-8"?>\n')
 		output.write('<kml xmlns="http://earth.google.com/kml/2.0">\n')
 		output.write('<Document>\n')
-		output.write('''
-			<Style id="defaultstyle">
-				<IconStyle id="khIconStyle5511">
-					<Icon>
-					</Icon>
-				</IconStyle>
-				<LabelStyle id="khLabelStyle5513">
-					<color>ffffaaff</color>
-					<scale>0.800000011920929</scale>
-				</LabelStyle>
-				<LineStyle id="khLineStyle5514">
-					<color>ffffaaff</color>
-				</LineStyle>
-				<PolyStyle id="khPolyStyle5515">
-					<fill>0</fill>
-				</PolyStyle>
-			</Style>''')
+		
+		for (i, style) in enumerate(conf['styles']):
+			line_colour = html_colour_to_abgr(style['fillColour'], 'ff')
+			fill_colour = html_colour_to_abgr(style['fillColour'], '88')
+			output.write('''
+				<Style id="style_%s">
+					<LineStyle><color>%s</color></LineStyle>
+					<PolyStyle><color>%s</color><fill>1</fill><outline>1</outline></PolyStyle>
+				</Style>
+			''' % (i, line_colour, fill_colour) )
 		
 		parser = sax.make_parser()
 		parser.setContentHandler(JmlParser(output, base_map['name_property'], base_map['id_property']))
