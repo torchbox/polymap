@@ -20,7 +20,7 @@ BASE_MAPS = {
 }
 
 class JmlParser(sax.handler.ContentHandler):
-	def __init__(self, output, name_property, id_property):
+	def __init__(self, output, name_property, id_property, lookup_fn):
 		self.output = output
 		self.name_property = name_property
 		self.id_property = id_property
@@ -29,11 +29,12 @@ class JmlParser(sax.handler.ContentHandler):
 		self.in_geometry = False
 		self.in_name_property = False
 		self.in_id_property = False
+		self.lookup_fn = lookup_fn
 	
 	def startElement(self, name, attrs):
 		if (name == 'feature'):
 			self.in_feature = True
-			self.output.write('<Placemark><visibility>1</visibility><styleUrl>#style_0</styleUrl>')
+			self.output.write('<Placemark><visibility>1</visibility>')
 			self.feature_name = None
 			self.feature_id = None
 		
@@ -68,6 +69,10 @@ class JmlParser(sax.handler.ContentHandler):
 		elif (name == 'feature'):
 			if self.feature_name:
 				self.output.write('<name>%s</name>\n' % cgi.escape(self.feature_name))
+			if self.feature_id:
+				style = self.lookup_fn(self.feature_id)
+				if style:
+					self.output.write('<styleUrl>#%s</styleUrl>\n' % cgi.escape(style))
 			self.output.write('</Placemark>\n')
 			self.in_feature = False
 		
@@ -112,8 +117,16 @@ class Map(db.Model):
 				</Style>
 			''' % (i, line_colour, fill_colour) )
 		
+		def look_up_style(region_id):
+			value = conf['data'].get(region_id)
+			if value == None:
+				return None
+			for (i, style) in enumerate(conf['styles']):
+				if value <= style['max']:
+					return "style_%s" % i
+		
 		parser = sax.make_parser()
-		parser.setContentHandler(JmlParser(output, base_map['name_property'], base_map['id_property']))
+		parser.setContentHandler(JmlParser(output, base_map['name_property'], base_map['id_property'], look_up_style))
 		parser.parse(infile)
 		
 		output.write('</Document>\n')
