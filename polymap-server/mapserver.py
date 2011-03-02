@@ -2,6 +2,8 @@ import cgi
 import os
 import re
 import hashlib
+import zipfile
+import StringIO
 from xml import sax
 
 try:
@@ -96,7 +98,7 @@ class Map(db.Model):
 	hash = db.StringProperty(required = True)
 	description = db.TextProperty()
 	
-	def render(self, output):
+	def render_kml(self, output):
 		conf = json.loads(self.description)
 		base_map = BASE_MAPS[conf['boundaries']]
 		base_map_filename = os.path.join(os.path.dirname(__file__), 'basemaps', base_map['filename'])
@@ -148,8 +150,16 @@ class RenderAction(webapp.RequestHandler):
 		if not map:
 			self.error(404)
 		else:
-			self.response.headers["Content-Type"] = "text/plain"
-			map.render(self.response.out)
+			self.response.headers["Content-Type"] = "application/vnd.google-earth.kmz"
+			kml_stream = StringIO.StringIO()
+			
+			map.render_kml(kml_stream)
+			
+			kmz = zipfile.ZipFile(self.response.out, 'w', zipfile.ZIP_DEFLATED)
+			kmz.writestr('doc.kml', kml_stream.getvalue().encode("utf-8"))
+			kmz.close()
+			
+			kml_stream.close()
 
 application = webapp.WSGIApplication(
 	[
