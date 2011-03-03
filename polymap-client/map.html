@@ -11,38 +11,40 @@
 <script src="json2.min.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
-/*	function initialize() {
-		var latlng = new google.maps.LatLng(51.552181, -0.141292);
-		var myOptions = {
-			zoom: 8,
-			center: latlng,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		var kml = new google.maps.KmlLayer('http://ron.torchbox.com/kml/uk_administrative_short.kml?7', {preserveViewport: true});
-		kml.setMap(map);
-	}
-*/
-
 	(function($) {
 		$.fn.areaMap = function(description) {
-			console.log( JSON.stringify(description));
+			function initialiseMapWithKml(kmlUrl) {
+				var latlng = new google.maps.LatLng(51.552181, -0.141292);
+				var myOptions = {
+					zoom: 8,
+					center: latlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+				var kml = new google.maps.KmlLayer(kmlUrl, {preserveViewport: true});
+				kml.setMap(map);
+			}
+			
 			$.post('create_map.php', JSON.stringify(description), function(response) {
-				console.log(response);
+				initialiseMapWithKml(response);
 			});
 		}
 	})(jQuery);
 
 	$(function() {
 		$('#map_canvas').areaMap({
-			'boundaries': 'country',
+			'boundaries': 'pct',
 			'styles': [
 				{'max': 1.0, 'fillColour': '#0000ff'},
 				{'max': 2.0, 'fillColour': '#00ff00'},
 				{'max': 5.0, 'fillColour': '#ff0000'}
 			],
 			'data': {
-				'E': 0.5, 'I': 1.5, 'W': 1.7, 'S': 2.5
+				'5A3': 1.5, '5A4': 11.5, '5A5': 1.7, '5A7': 2.5,
+				'5A8': 0.5, '5A9': 1.5, 'TAN': 1.7, '5AT': 2.5,
+				'5C1': 0.5, '5C2': 1.5, '5C3': 1.7, '5C4': 2.5,
+				'5C5': 0.5, '5C9': 1.5, '5CC': 1.7, '5CN': 2.5,
+				'5CQ': 0.5, '5D7': 1.5, '5D8': 1.7, '5D9': 2.5
 			}
 		})
 	})
