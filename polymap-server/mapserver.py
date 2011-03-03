@@ -36,7 +36,8 @@ class JmlParser(sax.handler.ContentHandler):
 	def startElement(self, name, attrs):
 		if (name == 'feature'):
 			self.in_feature = True
-			self.output.write('<Placemark><visibility>1</visibility>')
+			self.feature_kml_stream = StringIO.StringIO()
+			self.feature_kml_stream.write('<Placemark><visibility>1</visibility>')
 			self.feature_name = None
 			self.feature_id = None
 		
@@ -53,11 +54,11 @@ class JmlParser(sax.handler.ContentHandler):
 			# must be omitted in KML
 			pass
 		elif self.in_geometry and name.startswith('gml:'):
-			self.output.write('<%s>' % name[4:])
+			self.feature_kml_stream.write('<%s>' % name[4:])
 	
 	def characters(self, content):
 		if self.in_geometry:
-			self.output.write(cgi.escape(content))
+			self.feature_kml_stream.write(cgi.escape(content))
 		else:
 			if self.in_name_property:
 				self.feature_name = content
@@ -70,12 +71,15 @@ class JmlParser(sax.handler.ContentHandler):
 		
 		elif (name == 'feature'):
 			if self.feature_name:
-				self.output.write('<name>%s</name>\n' % cgi.escape(self.feature_name))
+				self.feature_kml_stream.write('<name>%s</name>\n' % cgi.escape(self.feature_name))
 			if self.feature_id:
 				style = self.lookup_fn(self.feature_id)
 				if style:
-					self.output.write('<styleUrl>#%s</styleUrl>\n' % cgi.escape(style))
-			self.output.write('</Placemark>\n')
+					self.feature_kml_stream.write('<styleUrl>#%s</styleUrl>\n' % cgi.escape(style))
+					self.feature_kml_stream.write('</Placemark>\n')
+					# only write to the final output stream if this area was found in the data
+					self.output.write(self.feature_kml_stream.getvalue())
+			self.feature_kml_stream.close()
 			self.in_feature = False
 		
 		elif (self.in_feature and name == 'property'):
@@ -86,7 +90,7 @@ class JmlParser(sax.handler.ContentHandler):
 			# must be omitted in KML
 			pass
 		elif self.in_geometry and name.startswith('gml:'):
-			self.output.write('</%s>' % name[4:])
+			self.feature_kml_stream.write('</%s>' % name[4:])
 
 def html_colour_to_abgr(html_colour, alpha):
 	match = re.match(r"#(..)(..)(..)", html_colour)
