@@ -76,9 +76,10 @@ class JmlParser(sax.handler.ContentHandler):
 			if self.feature_name:
 				self.feature_kml_stream.write('<name>%s</name>\n' % cgi.escape(self.feature_name))
 			if self.feature_id:
-				style = self.lookup_fn(self.feature_id)
-				if style:
-					self.feature_kml_stream.write('<styleUrl>#%s</styleUrl>\n' % cgi.escape(style))
+				properties = self.lookup_fn(self.feature_id)
+				if properties:
+					self.feature_kml_stream.write('<styleUrl>#%s</styleUrl>\n' % cgi.escape(properties['style']))
+					self.feature_kml_stream.write('<description>%s</description>\n' % cgi.escape(properties['description']))
 					self.feature_kml_stream.write('</Placemark>\n')
 					# only write to the final output stream if this area was found in the data
 					self.output.write(self.feature_kml_stream.getvalue())
@@ -126,16 +127,19 @@ class Map(db.Model):
 				</Style>
 			''' % (i, line_colour, fill_colour) )
 		
-		def look_up_style(region_id):
+		def look_up_properties(region_id):
 			value = conf['data'].get(region_id)
 			if value == None:
 				return None
 			for (i, style) in enumerate(conf['styles']):
 				if value <= style['max']:
-					return "style_%s" % i
+					return {
+						'style': "style_%s" % i,
+						'description': "%s%s%s" % (conf.get('descriptionPrefix', ''), value, conf.get('descriptionSuffix', '')),
+					}
 		
 		parser = sax.make_parser()
-		parser.setContentHandler(JmlParser(output, base_map['name_property'], base_map['id_property'], look_up_style))
+		parser.setContentHandler(JmlParser(output, base_map['name_property'], base_map['id_property'], look_up_properties))
 		parser.parse(infile)
 		
 		output.write('</Document>\n')
