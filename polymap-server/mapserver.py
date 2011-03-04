@@ -21,6 +21,7 @@ BASE_MAPS = {
 	'sha': {'filename': 'sha.jml', 'name_property': 'NAME', 'id_property': 'SHA_CODE'},
 	'country': {'filename': 'country.jml', 'name_property': 'COUNTRY', 'id_property': 'COUNTRY'},
 	'euro-region': {'filename': 'euro.jml', 'name_property': 'NAME', 'id_property': 'NUTS_ID'},
+	'county-ua': {'filename': 'county_ua.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 }
 
 class JmlParser(sax.handler.ContentHandler):
