@@ -18,7 +18,9 @@ from google.appengine.ext import db
 
 BASE_MAPS = {
 	'pct': {'filename': 'pct.jml', 'name_property': 'PCTCODE', 'id_property': 'PCTCODE'},
+	'sha': {'filename': 'sha.jml', 'name_property': 'NAME', 'id_property': 'SHA_CODE'},
 	'country': {'filename': 'country.jml', 'name_property': 'COUNTRY', 'id_property': 'COUNTRY'},
+	'euro-region': {'filename': 'euro.jml', 'name_property': 'NAME', 'id_property': 'NUTS_ID'},
 }
 
 class JmlParser(sax.handler.ContentHandler):
