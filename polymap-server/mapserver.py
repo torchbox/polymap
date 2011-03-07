@@ -20,7 +20,7 @@ BASE_MAPS = {
 	'pct': {'filename': 'pct.jml', 'name_property': 'PCTCODE', 'id_property': 'PCTCODE'},
 	'sha': {'filename': 'sha.jml', 'name_property': 'NAME', 'id_property': 'SHA_CODE'},
 	'country': {'filename': 'country.jml', 'name_property': 'COUNTRY', 'id_property': 'COUNTRY'},
-	'euro-region': {'filename': 'euro.jml', 'name_property': 'NAME', 'id_property': 'NUTS_ID'},
+	'euro-region': {'filename': 'euro_lowpoly.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 	'county-ua': {'filename': 'county_ua.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 }
 
@@ -53,8 +53,11 @@ class JmlParser(sax.handler.ContentHandler):
 			if attrs.get('name') == self.id_property:
 				self.in_id_property = True
 		
+		elif self.in_geometry and name == 'gml:MultiPolygon':
+			# use MultiGeometry instead
+			self.feature_kml_stream.write('<MultiGeometry>')
 		elif self.in_geometry and name == 'gml:polygonMember':
-			# must be omitted in KML
+			# omitted when using MultiGeometry
 			pass
 		elif self.in_geometry and name.startswith('gml:'):
 			self.feature_kml_stream.write('<%s>' % name[4:])
@@ -90,8 +93,11 @@ class JmlParser(sax.handler.ContentHandler):
 			self.in_name_property = False
 			self.in_id_property = False
 		
+		elif self.in_geometry and name == 'gml:MultiPolygon':
+			# use MultiGeometry instead
+			self.feature_kml_stream.write('</MultiGeometry>')
 		elif self.in_geometry and name == 'gml:polygonMember':
-			# must be omitted in KML
+			# omitted when using MultiGeometry
 			pass
 		elif self.in_geometry and name.startswith('gml:'):
 			self.feature_kml_stream.write('</%s>' % name[4:])
