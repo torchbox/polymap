@@ -447,7 +447,7 @@
                   </gml:outerBoundaryIs>
                 </gml:Polygon>
           </geometry>
-          <property name="NAME">West Midlands Euro Region</property>
+          <property name="NAME">West Midlands</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">WEST_MIDLANDS_EURO_REGION</property>
@@ -831,7 +831,7 @@
                   </gml:outerBoundaryIs>
                 </gml:Polygon>
           </geometry>
-          <property name="NAME">Yorkshire &amp; the Humber Euro Region</property>
+          <property name="NAME">Yorkshire and the Humber</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">YORKSHIRE_AND_THE_HUMBER_EURO_REGION</property>
@@ -1382,7 +1382,7 @@
                   </gml:polygonMember>
                 </gml:MultiPolygon>
           </geometry>
-          <property name="NAME">South East Euro Region</property>
+          <property name="NAME">South East</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">SOUTH_EAST_EURO_REGION</property>
@@ -1819,7 +1819,7 @@
                   </gml:polygonMember>
                 </gml:MultiPolygon>
           </geometry>
-          <property name="NAME">North East Euro Region</property>
+          <property name="NAME">North East</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">NORTH_EAST_EURO_REGION</property>
@@ -3079,7 +3079,7 @@
                   </gml:polygonMember>
                 </gml:MultiPolygon>
           </geometry>
-          <property name="NAME">Wales Euro Region</property>
+          <property name="NAME">Wales</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">WALES_EURO_REGION</property>
@@ -4720,7 +4720,7 @@
                   </gml:polygonMember>
                 </gml:MultiPolygon>
           </geometry>
-          <property name="NAME">South West Euro Region</property>
+          <property name="NAME">South West</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">SOUTH_WEST_EURO_REGION</property>
@@ -5145,7 +5145,7 @@
                   </gml:outerBoundaryIs>
                 </gml:Polygon>
           </geometry>
-          <property name="NAME">Eastern Euro Region</property>
+          <property name="NAME">Eastern</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">EASTERN_EURO_REGION</property>
@@ -5573,7 +5573,7 @@
                   </gml:outerBoundaryIs>
                 </gml:Polygon>
           </geometry>
-          <property name="NAME">North West Euro Region</property>
+          <property name="NAME">North West</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">NORTH_WEST_EURO_REGION</property>
@@ -5689,7 +5689,7 @@
                   </gml:outerBoundaryIs>
                 </gml:Polygon>
           </geometry>
-          <property name="NAME">London Euro Region</property>
+          <property name="NAME">London</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">LONDON_EURO_REGION</property>
@@ -6121,7 +6121,7 @@
                   </gml:outerBoundaryIs>
                 </gml:Polygon>
           </geometry>
-          <property name="NAME">East Midlands Euro Region</property>
+          <property name="NAME">East Midlands</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">EAST_MIDLANDS_EURO_REGION</property>
@@ -11552,7 +11552,7 @@
                   </gml:polygonMember>
                 </gml:MultiPolygon>
           </geometry>
-          <property name="NAME">Scotland Euro Region</property>
+          <property name="NAME">Scotland</property>
           <property name="AREA_CODE">EUR</property>
           <property name="DESCRIPTIO">European Region</property>
           <property name="FILE_NAME">SCOTLAND_EURO_REGION</property>
