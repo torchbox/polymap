@@ -1,7 +1,7 @@
 (function($) {
 	var hasGoogleMapsJS = false;
 	
-	$.fn.polymap = function(description, application_url) {
+	$.fn.polymap = function(description, applicationUrl) {
 		var container = this;
 		container.css({
 			'width': (description.width || 600) + 'px',
@@ -13,7 +13,9 @@
 			var myOptions = {
 				zoom: 5,
 				center: latlng,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
+				mapTypeId: google.maps.MapTypeId.TERRAIN,
+				streetViewControl: false,
+				mapTypeControl: false
 			};
 			var map = new google.maps.Map(container.get(0), myOptions);
 
@@ -24,6 +26,7 @@
 				'background-color': 'white',
 				'list-style-type': 'none',
 				'padding': '4px 8px 4px 8px',
+				'margin-top': '6px',
 				'margin-right': '6px',
 				'line-height': '1.3em',
 				'-moz-box-shadow': '2px 2px 3px rgba(0, 0, 0, 0.347656)',
@@ -49,18 +52,18 @@
 				map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend.get(0));
 			}
 
-			var kml = new google.maps.KmlLayer(kmlUrl, {preserveViewport: description.preserveViewport});
+			var kml = new google.maps.KmlLayer(kmlUrl + '?v=2', {preserveViewport: description.preserveViewport});
 			kml.setMap(map);
 		}
 
 		if (!hasGoogleMapsJS) {
 			window.googleMapsLoaded = function() {
 				hasGoogleMapsJS = true;
-				initialiseMapWithKml(application_url);
+				initialiseMapWithKml(applicationUrl);
 			}
 			$.getScript("http://maps.google.com/maps/api/js?sensor=false&callback=googleMapsLoaded");
 		} else {
-			initialiseMapWithKml(application_url);
+			initialiseMapWithKml(applicationUrl);
 		}
 	}
 })(jQuery);
