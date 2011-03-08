@@ -11,6 +11,12 @@
           <valueElement elementName="property" attributeName="name" attributeValue="COUNTRY"/>
           <valueLocation position="body"/>
      </column>
+     <column>
+          <name>NAME</name>
+          <type>STRING</type>
+          <valueElement elementName="property" attributeName="name" attributeValue="NAME"/>
+          <valueLocation position="body"/>
+     </column>
 </ColumnDefinitions>
 </JCSGMLInputTemplate>
 
@@ -1147,6 +1153,7 @@
                 </gml:MultiPolygon>
           </geometry>
           <property name="COUNTRY"></property>
+          <property name="NAME"></property>
      </feature>
 
      <feature> 
@@ -2433,6 +2440,7 @@
                 </gml:MultiPolygon>
           </geometry>
           <property name="COUNTRY">E</property>
+          <property name="NAME">England</property>
      </feature>
 
      <feature> 
@@ -39377,6 +39385,7 @@
                 </gml:MultiPolygon>
           </geometry>
           <property name="COUNTRY">I</property>
+          <property name="NAME">Northern Ireland</property>
      </feature>
 
      <feature> 
@@ -44115,6 +44124,7 @@
                 </gml:MultiPolygon>
           </geometry>
           <property name="COUNTRY">S</property>
+          <property name="NAME">Scotland</property>
      </feature>
 
      <feature> 
@@ -45006,6 +45016,7 @@
                 </gml:MultiPolygon>
           </geometry>
           <property name="COUNTRY">W</property>
+          <property name="NAME">Wales</property>
      </feature>
 
      </featureCollection>
