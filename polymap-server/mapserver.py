@@ -123,7 +123,7 @@ class Map(db.Model):
 		
 		for (i, style) in enumerate(conf['styles']):
 			# line_colour = html_colour_to_abgr(style['fillColour'], 'ff')
-			fill_colour = html_colour_to_abgr(style['fillColour'], 'cc')
+			fill_colour = html_colour_to_abgr(style['fillColour'], 'e6')
 			output.write('''
 				<Style id="style_%s">
 					<LineStyle><width>0</width></LineStyle>
