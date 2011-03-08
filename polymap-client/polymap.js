@@ -13,7 +13,9 @@
 			var myOptions = {
 				zoom: 5,
 				center: latlng,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
+				mapTypeId: google.maps.MapTypeId.TERRAIN,
+				streetViewControl: false,
+				mapTypeControl: false
 			};
 			var map = new google.maps.Map(container.get(0), myOptions);
 
