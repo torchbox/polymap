@@ -52,7 +52,7 @@
 				map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend.get(0));
 			}
 
-			var kml = new google.maps.KmlLayer(kmlUrl + '?v=2', {preserveViewport: description.preserveViewport});
+			var kml = new google.maps.KmlLayer(kmlUrl + '?v=3', {preserveViewport: description.preserveViewport});
 			kml.setMap(map);
 		}
 
