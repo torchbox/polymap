@@ -26,6 +26,7 @@
 				'background-color': 'white',
 				'list-style-type': 'none',
 				'padding': '4px 8px 4px 8px',
+				'margin-top': '6px',
 				'margin-right': '6px',
 				'line-height': '1.3em',
 				'-moz-box-shadow': '2px 2px 3px rgba(0, 0, 0, 0.347656)',
