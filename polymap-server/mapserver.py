@@ -19,9 +19,10 @@ from google.appengine.ext import db
 BASE_MAPS = {
 	'pct': {'filename': 'pct.jml', 'name_property': 'PCTCODE', 'id_property': 'PCTCODE'},
 	'sha': {'filename': 'sha.jml', 'name_property': 'NAME', 'id_property': 'SHA_CODE'},
-	'country': {'filename': 'country.jml', 'name_property': 'COUNTRY', 'id_property': 'COUNTRY'},
+	'country': {'filename': 'country.jml', 'name_property': 'NAME', 'id_property': 'COUNTRY'},
 	'euro-region': {'filename': 'euro_lowpoly.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
-	'county-ua': {'filename': 'county_ua.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
+	'county-ua': {'filename': 'county_district.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
+	'county-district': {'filename': 'county_district.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 }
 
 class JmlParser(sax.handler.ContentHandler):
@@ -124,14 +125,14 @@ class Map(db.Model):
 		output.write('<Document>\n')
 		
 		for (i, style) in enumerate(conf['styles']):
-			line_colour = html_colour_to_abgr(style['fillColour'], 'ff')
-			fill_colour = html_colour_to_abgr(style['fillColour'], '88')
+			# line_colour = html_colour_to_abgr(style['fillColour'], 'ff')
+			fill_colour = html_colour_to_abgr(style['fillColour'], 'cc')
 			output.write('''
 				<Style id="style_%s">
-					<LineStyle><color>%s</color></LineStyle>
+					<LineStyle><width>0</width></LineStyle>
 					<PolyStyle><color>%s</color><fill>1</fill><outline>1</outline></PolyStyle>
 				</Style>
-			''' % (i, line_colour, fill_colour) )
+			''' % (i, fill_colour) )
 		
 		def look_up_properties(region_id):
 			value = conf['data'].get(region_id)
