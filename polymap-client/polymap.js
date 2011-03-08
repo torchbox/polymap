@@ -1,11 +1,13 @@
 (function($) {
-	$.fn.polymap = function(description) {
+	var hasGoogleMapsJS = false;
+	
+	$.fn.polymap = function(description, application_url) {
 		var container = this;
 		container.css({
 			'width': (description.width || 600) + 'px',
 			'height': (description.height || 400) + 'px'
 		})
-		
+
 		function initialiseMapWithKml(kmlUrl) {
 			var latlng = new google.maps.LatLng(55, -5);
 			var myOptions = {
@@ -14,7 +16,7 @@
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 			var map = new google.maps.Map(container.get(0), myOptions);
-			
+
 			var legend = $('<ul class="legend"></ul>');
 			legend.css({
 				'font-size': '10pt',
@@ -33,7 +35,7 @@
 				var style = description.styles[i];
 				if (style.label) {
 					showLegend = true;
-					var legendItem = $('<li></li>').text(style.label);
+					var legendItem = $('<li></li>').css({'list-style-image': 'none'}).text(style.label);
 					var swatch = $('<span></span>').css({
 						'padding': '0 8px 0 8px',
 						'margin-right': '8px',
@@ -46,13 +48,19 @@
 			if (showLegend) {
 				map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend.get(0));
 			}
-			
+
 			var kml = new google.maps.KmlLayer(kmlUrl, {preserveViewport: description.preserveViewport});
 			kml.setMap(map);
 		}
-		
-		$.post('create_map.php', JSON.stringify(description), function(response) {
-			initialiseMapWithKml(response);
-		});
+
+		if (!hasGoogleMapsJS) {
+			window.googleMapsLoaded = function() {
+				hasGoogleMapsJS = true;
+				initialiseMapWithKml(application_url);
+			}
+			$.getScript("http://maps.google.com/maps/api/js?sensor=false&callback=googleMapsLoaded");
+		} else {
+			initialiseMapWithKml(application_url);
+		}
 	}
 })(jQuery);
