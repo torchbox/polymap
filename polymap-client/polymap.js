@@ -21,13 +21,13 @@
 
 			var legend = $('<ul class="legend"></ul>');
 			legend.css({
-				'font-size': '10pt',
+				'font-size': '0.8em',
 				'border': '1px solid #678AC7',
 				'background-color': 'white',
 				'list-style-type': 'none',
 				'padding': '4px 8px 4px 8px',
-				'margin-top': '6px',
-				'margin-right': '6px',
+				'margin-top': '20px',
+				'margin-right': '20px',
 				'line-height': '1.3em',
 				'-moz-box-shadow': '2px 2px 3px rgba(0, 0, 0, 0.347656)',
 				'-webkit-box-shadow': '2px 2px 3px rgba(0, 0, 0, 0.347656)',
