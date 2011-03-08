@@ -6,10 +6,7 @@ import zipfile
 import StringIO
 from xml import sax
 
-try:
-	import json
-except ImportError:
-	import simplejson as json
+from django.utils import simplejson as json
 
 from google.appengine.api import users
 from google.appengine.ext import webapp
