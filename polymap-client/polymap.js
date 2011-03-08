@@ -1,7 +1,7 @@
 (function($) {
 	var hasGoogleMapsJS = false;
 	
-	$.fn.polymap = function(description, application_url) {
+	$.fn.polymap = function(description, applicationUrl) {
 		var container = this;
 		container.css({
 			'width': (description.width || 600) + 'px',
@@ -51,18 +51,18 @@
 				map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend.get(0));
 			}
 
-			var kml = new google.maps.KmlLayer(kmlUrl, {preserveViewport: description.preserveViewport});
+			var kml = new google.maps.KmlLayer(kmlUrl + '?v=2', {preserveViewport: description.preserveViewport});
 			kml.setMap(map);
 		}
 
 		if (!hasGoogleMapsJS) {
 			window.googleMapsLoaded = function() {
 				hasGoogleMapsJS = true;
-				initialiseMapWithKml(application_url);
+				initialiseMapWithKml(applicationUrl);
 			}
 			$.getScript("http://maps.google.com/maps/api/js?sensor=false&callback=googleMapsLoaded");
 		} else {
-			initialiseMapWithKml(application_url);
+			initialiseMapWithKml(applicationUrl);
 		}
 	}
 })(jQuery);
