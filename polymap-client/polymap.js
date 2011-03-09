@@ -1,5 +1,14 @@
 (function($) {
-	var hasGoogleMapsJS = false;
+	var googleMapsJSRequested = false;
+	var googleMapsJSLoaded = false;
+	var googleMapsOnloadActions = [];
+	
+	window.googleMapsOnload = function() {
+		googleMapsJSLoaded = true;
+		for (var i = 0; i < googleMapsOnloadActions.length; i++) {
+			googleMapsOnloadActions[i]();
+		}
+	}
 	
 	$.fn.polymap = function(description, applicationUrl) {
 		var container = this;
@@ -56,14 +65,16 @@
 			kml.setMap(map);
 		}
 
-		if (!hasGoogleMapsJS) {
-			window.googleMapsLoaded = function() {
-				hasGoogleMapsJS = true;
-				initialiseMapWithKml(applicationUrl);
-			}
-			$.getScript("http://maps.google.com/maps/api/js?sensor=false&callback=googleMapsLoaded");
-		} else {
+		if (googleMapsJSLoaded) {
 			initialiseMapWithKml(applicationUrl);
+		} else {
+			googleMapsOnloadActions.push(function() {
+				initialiseMapWithKml(applicationUrl);
+			});
+			if (!googleMapsJSRequested) {
+				$.getScript("http://maps.google.com/maps/api/js?sensor=false&callback=googleMapsOnload");
+				googleMapsJSRequested = true;
+			}
 		}
 	}
 })(jQuery);
