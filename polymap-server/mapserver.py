@@ -20,6 +20,7 @@ BASE_MAPS = {
 	'euro-region': {'filename': 'euro_lowpoly.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 	'county-ua': {'filename': 'county_district.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 	'county-district': {'filename': 'county_district.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
+	'london-borough': {'filename': 'london.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 }
 
 class JmlParser(sax.handler.ContentHandler):
