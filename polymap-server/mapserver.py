@@ -110,6 +110,7 @@ def html_colour_to_abgr(html_colour, alpha):
 class Map(db.Model):
 	hash = db.StringProperty(required = True)
 	description = db.TextProperty()
+	kmz = db.BlobProperty()
 	
 	def render_kml(self, output):
 		conf = json.loads(self.description)
@@ -149,6 +150,25 @@ class Map(db.Model):
 		
 		output.write('</Document>\n')
 		output.write('</kml>\n')
+	
+	def render_kmz(self, output):
+		kml_stream = StringIO.StringIO()
+		
+		self.render_kml(kml_stream)
+		
+		kmz = zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED)
+		kmz.writestr('doc.kml', kml_stream.getvalue().encode("utf-8"))
+		kmz.close()
+		
+		kml_stream.close()
+	
+	def get_kmz(self):
+		if not self.kmz:
+			kmz_stream = StringIO.StringIO()
+			self.render_kmz(kmz_stream)
+			self.kmz = kmz_stream.getvalue()
+			self.put()
+		return self.kmz
 
 class CreateAction(webapp.RequestHandler):
 	def post(self):
@@ -167,15 +187,7 @@ class RenderAction(webapp.RequestHandler):
 			self.error(404)
 		else:
 			self.response.headers["Content-Type"] = "application/vnd.google-earth.kmz"
-			kml_stream = StringIO.StringIO()
-			
-			map.render_kml(kml_stream)
-			
-			kmz = zipfile.ZipFile(self.response.out, 'w', zipfile.ZIP_DEFLATED)
-			kmz.writestr('doc.kml', kml_stream.getvalue().encode("utf-8"))
-			kmz.close()
-			
-			kml_stream.close()
+			self.response.out.write(map.get_kmz())
 
 application = webapp.WSGIApplication(
 	[
