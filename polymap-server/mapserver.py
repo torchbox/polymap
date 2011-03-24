@@ -111,6 +111,7 @@ class Map(db.Model):
 	hash = db.StringProperty(required = True)
 	description = db.TextProperty()
 	kmz = db.BlobProperty()
+	last_access_time = db.DateTimeProperty(auto_now = True)
 	
 	def render_kml(self, output):
 		conf = json.loads(self.description)
@@ -167,7 +168,7 @@ class Map(db.Model):
 			kmz_stream = StringIO.StringIO()
 			self.render_kmz(kmz_stream)
 			self.kmz = kmz_stream.getvalue()
-			self.put()
+		self.put()
 		return self.kmz
 
 class CreateAction(webapp.RequestHandler):
