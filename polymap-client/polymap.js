@@ -28,12 +28,13 @@
 			};
 			var map = new google.maps.Map(container.get(0), myOptions);
 
-			var legend = $('<ul class="legend"></ul>');
+			var legend = $('<div class="legend"></div>');
+			var legendUl = $('<ul></ul>');
+			legend.append(legendUl);
 			legend.css({
 				'font-size': '0.8em',
 				'border': '1px solid #678AC7',
 				'background-color': 'white',
-				'list-style-type': 'none',
 				'padding': '4px 8px 4px 8px',
 				'margin-top': '20px',
 				'margin-right': '20px',
@@ -42,6 +43,11 @@
 				'-webkit-box-shadow': '2px 2px 3px rgba(0, 0, 0, 0.347656)',
 				'box-shadow': '2px 2px 3px rgba(0, 0, 0, 0.347656)'
 			});
+			legendUl.css({
+				'padding': '0',
+				'margin': '0',
+				'list-style-type': 'none'
+			})
 			var showLegend = false;
 			for (var i = 0; i < description.styles.length; i++) {
 				var style = description.styles[i];
@@ -54,7 +60,7 @@
 						'background-color': style.fillColour
 					})
 					legendItem.prepend(swatch);
-					legend.append(legendItem);
+					legendUl.append(legendItem);
 				}
 			}
 			if (showLegend) {
