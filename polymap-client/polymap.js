@@ -29,6 +29,13 @@
 			var map = new google.maps.Map(container.get(0), myOptions);
 
 			var legend = $('<div class="legend"></div>');
+			if (description.legendTitle) {
+				var legendTitle = $('<h3></h3>').text(description.legendTitle).css({
+					'margin': '0 0 4px 0',
+					'padding': '0'
+				});
+				legend.append(legendTitle);
+			}
 			var legendUl = $('<ul></ul>');
 			legend.append(legendUl);
 			legend.css({
@@ -56,7 +63,7 @@
 					var legendItem = $('<li></li>').css({'list-style-image': 'none'}).text(style.label);
 					var swatch = $('<span></span>').css({
 						'padding': '0 8px 0 8px',
-						'margin-right': '8px',
+						'margin': '0 8px 0 0',
 						'background-color': style.fillColour
 					})
 					legendItem.prepend(swatch);
