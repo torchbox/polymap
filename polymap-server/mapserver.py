@@ -126,17 +126,23 @@ class Map(db.Model):
 		
 		global_border_width = conf.get('borderWidth', 0)
 		global_opacity = conf.get('opacity', 0.9)
+		global_border_colour = conf.get('borderColour')
+		
 		for (i, style) in enumerate(conf['styles']):
 			opacity = style.get('opacity', global_opacity)
-			line_color = html_colour_to_abgr(style['fillColour'], 1)
-			fill_color = html_colour_to_abgr(style['fillColour'], opacity)
+			# border colour: first choice is style['borderColour'], then global border colour, then fillColour
+			line_colour_rgb = style.get('borderColour', global_border_colour)
+			if line_colour_rgb == None:
+				line_colour_rgb = style['fillColour']
+			line_colour = html_colour_to_abgr(line_colour_rgb, 1)
+			fill_colour = html_colour_to_abgr(style['fillColour'], opacity)
 			border_width = style.get('borderWidth', global_border_width)
 			output.write('''
 				<Style id="style_%s">
 					<LineStyle><color>%s</color><width>%s</width></LineStyle>
 					<PolyStyle><color>%s</color><fill>1</fill><outline>1</outline></PolyStyle>
 				</Style>
-			''' % (i, line_color, border_width, fill_color) )
+			''' % (i, line_colour, border_width, fill_colour) )
 		
 		def look_up_properties(region_id):
 			value = conf['data'].get(region_id)
