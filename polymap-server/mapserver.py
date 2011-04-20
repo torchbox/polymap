@@ -105,7 +105,7 @@ def html_colour_to_abgr(html_colour, alpha):
 	match = re.match(r"#(..)(..)(..)", html_colour)
 	if match:
 		r, g, b = match.groups()
-		return "%s%s%s%s" % (alpha, b, g, r)
+		return "%02x%s%s%s" % (alpha * 255, b, g, r)
 
 class Map(db.Model):
 	hash = db.StringProperty(required = True)
@@ -124,15 +124,19 @@ class Map(db.Model):
 		output.write('<kml xmlns="http://earth.google.com/kml/2.0">\n')
 		output.write('<Document>\n')
 		
+		global_border_width = conf.get('borderWidth', 0)
+		global_opacity = conf.get('opacity', 0.9)
 		for (i, style) in enumerate(conf['styles']):
-			# line_colour = html_colour_to_abgr(style['fillColour'], 'ff')
-			fill_colour = html_colour_to_abgr(style['fillColour'], 'e6')
+			opacity = style.get('opacity', global_opacity)
+			line_color = html_colour_to_abgr(style['fillColour'], 1)
+			fill_color = html_colour_to_abgr(style['fillColour'], opacity)
+			border_width = style.get('borderWidth', global_border_width)
 			output.write('''
 				<Style id="style_%s">
-					<LineStyle><width>0</width></LineStyle>
+					<LineStyle><color>%s</color><width>%s</width></LineStyle>
 					<PolyStyle><color>%s</color><fill>1</fill><outline>1</outline></PolyStyle>
 				</Style>
-			''' % (i, fill_colour) )
+			''' % (i, line_color, border_width, fill_color) )
 		
 		def look_up_properties(region_id):
 			value = conf['data'].get(region_id)
