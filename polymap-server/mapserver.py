@@ -14,7 +14,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
 BASE_MAPS = {
-	'pct': {'filename': 'pct.jml', 'name_property': 'PCTCODE', 'id_property': 'PCTCODE'},
+	'pct': {'filename': 'pct.jml', 'name_property': 'NAME', 'id_property': 'PCTCODE'},
 	'sha': {'filename': 'sha.jml', 'name_property': 'NAME', 'id_property': 'SHA_CODE'},
 	'country': {'filename': 'country.jml', 'name_property': 'NAME', 'id_property': 'COUNTRY'},
 	'euro-region': {'filename': 'euro_lowpoly.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
