@@ -145,14 +145,25 @@ class Map(db.Model):
 			''' % (i, line_colour, border_width, fill_colour) )
 		
 		def look_up_properties(region_id):
-			value = conf['data'].get(region_id)
-			if value == None:
+			item = conf['data'].get(region_id)
+			if item == None:
 				return None
+			# try to interpret value as a dict with 'value' and 'description' keys
+			try:
+				value = item['value']
+				description = item.get('description')
+			except TypeError:
+				# original behaviour - item is the value itself
+				value = item
+				description = None
 			for (i, style) in enumerate(conf['styles']):
 				if value <= style['max']:
+					full_description = "%s%s%s" % (conf.get('descriptionPrefix', ''), value, conf.get('descriptionSuffix', ''))
+					if (description):
+						full_description += ('<p>%s</p>' % description)
 					return {
 						'style': "style_%s" % i,
-						'description': "%s%s%s" % (conf.get('descriptionPrefix', ''), value, conf.get('descriptionSuffix', '')),
+						'description': full_description,
 					}
 		
 		parser = sax.make_parser()
