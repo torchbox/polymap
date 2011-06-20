@@ -1,0 +1,52 @@
+div.google-map {
+	border:5px solid #595958;
+	border-radius:5px 5px 5px 5px;
+	margin-bottom:28px;
+}
+
+div.google-map .legend {
+	border:1px solid #777;
+	background-color:rgba(255,255,255,0.9);
+	font-size: 0.8em;
+	padding: 4px 8px 4px 8px;
+	height: 380px;
+	line-height: 1.3em;
+	width: 100px;
+}
+
+div.google-map .map-layer-tabs {
+	background-color: #595958;
+	line-height: 2.5em;
+	color: white;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+div.google-map .map-layer-tabs ul {
+	display: inline;
+	padding: 0;
+	padding-left: 10px;
+	margin: 0;
+}
+div.google-map .map-layer-tabs ul li {
+	display: inline;
+	margin: 0;
+	padding: 4px;
+}
+div.google-map .map-layer-tabs ul li a {
+	background-color: #333;
+	border-radius: 3px;
+	color: white;
+	padding: 4px 12px;
+	text-decoration: none;
+}
+div.google-map .map-layer-tabs ul li a:hover {
+	background-color: black;
+}
+div.google-map .map-layer-tabs ul li a.current {
+	color: #333;
+	background-color: white;
+}
+
+.primary-column div.google-map li{
+	margin:0;
+}
