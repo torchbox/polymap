@@ -16,6 +16,7 @@ from google.appengine.ext import db
 BASE_MAPS = {
 	'pct': {'filename': 'pct.jml', 'name_property': 'NAME', 'id_property': 'PCTCODE'},
 	'sha': {'filename': 'sha.jml', 'name_property': 'NAME', 'id_property': 'SHA_CODE'},
+	'country-sha': {'filename': 'sha.jml', 'name_property': 'NAME', 'id_property': 'SHA_CODE'},
 	'country': {'filename': 'country.jml', 'name_property': 'NAME', 'id_property': 'COUNTRY'},
 	'euro-region': {'filename': 'euro_lowpoly.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 	'county-ua': {'filename': 'county_district.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
@@ -23,6 +24,11 @@ BASE_MAPS = {
 	'london-borough': {'filename': 'london.jml', 'name_property': 'NAME', 'id_property': 'CODE'},
 }
 
+# SAX handler to walk a JML file writing the generated KML to an output stream.
+# output = the output stream
+# name_property = the name of the property which contains region names (for outputting as the <name> field in the output)
+# id_property = the name of the property which contains region IDs (for passing to lookup_fn)
+# lookup_fn = a function which takes a region ID and returns a dict of 'style' (a style id) and 'description', or None to skip rendering of that region
 class JmlParser(sax.handler.ContentHandler):
 	def __init__(self, output, name_property, id_property, lookup_fn):
 		self.output = output
@@ -109,12 +115,17 @@ def html_colour_to_abgr(html_colour, alpha):
 
 class Map(db.Model):
 	hash = db.StringProperty(required = True)
+	layer_index = db.IntegerProperty() # if present, description is a json array, and this indicates which index into the array to use
 	description = db.TextProperty()
 	kmz = db.BlobProperty()
 	last_access_time = db.DateTimeProperty(auto_now = True)
 	
+	# generate the KML representation of this map, outputting to the output stream
 	def render_kml(self, output):
 		conf = json.loads(self.description)
+		if self.layer_index != None:
+			conf = conf[self.layer_index]
+		
 		base_map = BASE_MAPS[conf['boundaries']]
 		base_map_filename = os.path.join(os.path.dirname(__file__), 'basemaps', base_map['filename'])
 		
@@ -173,6 +184,7 @@ class Map(db.Model):
 		output.write('</Document>\n')
 		output.write('</kml>\n')
 	
+	# generate the KMZ representation of this map, outputting to the output stream
 	def render_kmz(self, output):
 		kml_stream = StringIO.StringIO()
 		
@@ -184,6 +196,7 @@ class Map(db.Model):
 		
 		kml_stream.close()
 	
+	# return the KMZ representation of this map, caching it in the datastore if not present already
 	def get_kmz(self):
 		if not self.kmz:
 			kmz_stream = StringIO.StringIO()
@@ -192,16 +205,35 @@ class Map(db.Model):
 		self.put()
 		return self.kmz
 
+# Handler for '/create' requests.
+# Accepts a POSTed JSON packet, which may be:
+# a dict representing the configuration for a single map overlay, or an array of dicts.
+# Returns a URL where the KMZ representation of this map can be fetched;
+# if an array was passed, '/[layernumber]' should be appended to this URL
+# to retrieve a specific layer. (layernumber is 0-based)
 class CreateAction(webapp.RequestHandler):
 	def post(self):
 		hash = hashlib.md5(self.request.body).hexdigest()
-		map = Map.gql("WHERE hash = :1", hash).get()
-		if not map:
-			map = Map(hash = hash, description = self.request.body)
-			map.put()
+		conf = json.loads(self.request.body)
+		
+		if isinstance(conf, list):
+			# create a map entry for every element in conf
+			for i in xrange(len(conf)):
+				self.create_map_record(hash, i, self.request.body)
+		else:
+			# create a single unindexed map entry
+			self.create_map_record(hash, None, self.request.body)
 		
 		self.response.out.write('%s/kmz/%s' % (self.request.application_url, hash))
+	
+	def create_map_record(self, hash, layer_index, body):
+		map = Map.gql("WHERE hash = :1 AND layer_index = :2", hash, layer_index).get()
+		if not map:
+			map = Map(hash = hash, layer_index = layer_index, description = body)
+			map.put()
 
+# Handler for '/kmz/[hash]' requests.
+# Returns the KMZ for a map which was created as a single layer
 class RenderAction(webapp.RequestHandler):
 	def get(self, hash):
 		map = Map.gql("WHERE hash = :1", hash).get()
@@ -211,10 +243,22 @@ class RenderAction(webapp.RequestHandler):
 			self.response.headers["Content-Type"] = "application/vnd.google-earth.kmz"
 			self.response.out.write(map.get_kmz())
 
+# Handler for '/kmz/[hash]/[layer-index]' requests.
+# Returns the KMZ for a map which was created as part of a multi-layer request.
+class RenderLayerAction(webapp.RequestHandler):
+	def get(self, hash, layer_index):
+		map = Map.gql("WHERE hash = :1 AND layer_index = :2", hash, int(layer_index)).get()
+		if not map:
+			self.error(404)
+		else:
+			self.response.headers["Content-Type"] = "application/vnd.google-earth.kmz"
+			self.response.out.write(map.get_kmz())
+
 application = webapp.WSGIApplication(
 	[
 		('/create', CreateAction),
-		('/kmz/(.*)', RenderAction),
+		('/kmz/(\w+)', RenderAction),
+		('/kmz/(\w+)/(\d+)', RenderLayerAction),
 	],
 	debug = True)
 
