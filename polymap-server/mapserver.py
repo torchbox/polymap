@@ -148,12 +148,21 @@ class Map(db.Model):
 			line_colour = html_colour_to_abgr(line_colour_rgb, 1)
 			fill_colour = html_colour_to_abgr(style['fillColour'], opacity)
 			border_width = style.get('borderWidth', global_border_width)
-			output.write('''
-				<Style id="style_%s">
-					<LineStyle><color>%s</color><width>%s</width></LineStyle>
-					<PolyStyle><color>%s</color><fill>1</fill><outline>1</outline></PolyStyle>
-				</Style>
-			''' % (i, line_colour, border_width, fill_colour) )
+			
+			if opacity > 0:
+				output.write('''
+					<Style id="style_%s">
+						<LineStyle><color>%s</color><width>%s</width></LineStyle>
+						<PolyStyle><color>%s</color><fill>1</fill><outline>1</outline></PolyStyle>
+					</Style>
+				''' % (i, line_colour, border_width, fill_colour) )
+			else:
+				output.write('''
+					<Style id="style_%s">
+						<LineStyle><color>%s</color><width>%s</width></LineStyle>
+						<PolyStyle><fill>0</fill><outline>1</outline></PolyStyle>
+					</Style>
+				''' % (i, line_colour, border_width) )
 		
 		def look_up_properties(region_id):
 			item = conf['data'].get(region_id)
