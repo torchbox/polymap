@@ -143,7 +143,7 @@
 			
 			if (mainDescription.overlays) {
 				var overlayOptions = $('<ul class="overlay-options"></ul>');
-				drawer.append('<h4>Overlays</h4>',overlayOptions);
+				drawer.append('<h4>Boundaries</h4>',overlayOptions);
 				
 				function addOverlay(overlayType) {
 					var overlay = OVERLAY_TYPES[overlayType];
