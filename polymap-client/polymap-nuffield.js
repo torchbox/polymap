@@ -58,7 +58,7 @@
 			}
 		}
 		
-		var legend, drawer;
+		var legend;
 		var kmlLayers = [];
 		
 		function setKmlLayer(layerIndex, preserveViewport) {
@@ -120,13 +120,16 @@
 			};
 			map = new google.maps.Map(mapElem.get(0), myOptions);
 			
-			drawer = $('<div class="drawer"></div>');
+			var drawerBase = $('<div class="drawer-base"></div>');
+			var drawer = $('<div class="drawer"></div>');
 			legend = $('<div class="legend"></div>');
+			drawerBase.append(drawer);
 			drawer.append(legend);
-			map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(drawer.get(0));
+			map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(drawerBase.get(0));
+			
 			/*
 			drawer.click(function() {
-				$(this).slideUp();
+				$(this).animate({'left': 0});
 			})
 			*/
 			

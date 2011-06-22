@@ -4,14 +4,28 @@ div.google-map {
 	margin-bottom:28px;
 }
 
+div.google-map .drawer-base {
+	position: relative;
+	height: 100%;
+}
 div.google-map .drawer {
+	position: absolute;
+	left: -166px;
 	border:1px solid #777;
 	background-color:rgba(255,255,255,0.9);
 	font-size: 0.8em;
 	padding: 4px 8px 4px 8px;
-	height: 380px;
+	height: 100%;
 	line-height: 1.3em;
-	width: 100px;
+	width: 150px;
+}
+div.google-map .drawer .handle {
+	position: absolute;
+	left: -16px;
+	top: 10px;
+	background-color: rgba(255,255,255,0.9);
+	width: 16px;
+	height: 32px;
 }
 
 div.google-map .drawer h4 {
