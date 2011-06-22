@@ -121,17 +121,17 @@
 			map = new google.maps.Map(mapElem.get(0), myOptions);
 			
 			var drawerBase = $('<div class="drawer-base"></div>');
-			var drawer = $('<div class="drawer"></div>');
+			var drawer = $('<div class="drawer"><div class="handle"></div></div>');
 			legend = $('<div class="legend"></div>');
 			drawerBase.append(drawer);
 			drawer.append(legend);
 			map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(drawerBase.get(0));
 			
-			/*
-			drawer.click(function() {
-				$(this).animate({'left': 0});
+			drawer.find('.handle').toggle(function() {
+				drawer.animate({'left': 0});
+			}, function() {
+				drawer.animate({'left': '-166px'});
 			})
-			*/
 			
 			for (var i = 0; i < descriptions.length; i++) {
 				if (multilayer) {
@@ -148,7 +148,7 @@
 				
 				function addOverlay(overlayType) {
 					var overlay = OVERLAY_TYPES[overlayType];
-					var kml = new google.maps.KmlLayer(overlay.url, {'preserveViewport': true});
+					var kml = new google.maps.KmlLayer(overlay.url, {'preserveViewport': true, 'suppressInfoWindows': true});
 					var li = $('<li><input type="checkbox" /><label></label></li>');
 					overlayOptions.append(li);
 					

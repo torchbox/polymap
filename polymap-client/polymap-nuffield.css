@@ -21,6 +21,7 @@ div.google-map .drawer {
 }
 div.google-map .drawer .handle {
 	position: absolute;
+	cursor: pointer;
 	left: -16px;
 	top: 10px;
 	background-color: rgba(255,255,255,0.9);
