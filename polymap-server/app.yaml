@@ -4,6 +4,8 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /outline-maps
+  static_dir: outline-maps
 - url: /.*
   script: mapserver.py
 
