@@ -60,6 +60,7 @@
 		
 		var legend;
 		var kmlLayers = [];
+		var overlayInfo = [];
 		
 		function setKmlLayer(layerIndex, preserveViewport) {
 			var description = descriptions[layerIndex];
@@ -105,6 +106,14 @@
 						kmlLayers[i].setMap(null);
 					} catch(e) {
 					}
+				}
+			}
+			
+			for (var i = 0; i < overlayInfo.length; i++) {
+				overlayInfo[i].checkbox.removeAttr('checked');
+				try {
+					overlayInfo[i].kml.setMap(null);
+				} catch(e) {
 				}
 			}
 		}
@@ -161,10 +170,11 @@
 						}
 					})
 					li.find('label').text(overlay.label).attr({'for': checkboxId});
+					return {'kml': kml, 'checkbox': li.find('input')};
 				}
 				
 				for (var i = 0; i < mainDescription.overlays.length; i++) {
-					addOverlay(mainDescription.overlays[i]);
+					overlayInfo[i] = addOverlay(mainDescription.overlays[i]);
 				}
 			}
 			
