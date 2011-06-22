@@ -127,9 +127,9 @@
 			map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(drawerBase.get(0));
 			
 			drawer.find('.handle').toggle(function() {
-				drawer.animate({'left': 0});
+				drawer.addClass('hidden').animate({'left': 0});
 			}, function() {
-				drawer.animate({'left': '-166px'});
+				drawer.removeClass('hidden').animate({'left': '-166px'});
 			})
 			
 			for (var i = 0; i < descriptions.length; i++) {
