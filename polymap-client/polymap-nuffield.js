@@ -10,7 +10,18 @@
 		}
 	}
 	
+	var nextId = 0;
+	
 	$.fn.polymap = function(descriptions, kmlUrl) {
+		
+		var OVERLAY_TYPES = {
+			'sha': {url: 'http://tbxpolymap.appspot.com/outline-maps/country-sha.kmz', label: 'SHA'},
+			'country-sha': {url: 'http://tbxpolymap.appspot.com/outline-maps/country-sha.kmz', label: 'SHA'},
+			'pct': {url: 'http://tbxpolymap.appspot.com/outline-maps/pct.kmz', label: 'PCT'},
+			'county': {url: 'http://tbxpolymap.appspot.com/outline-maps/county.kmz', label: 'County'},
+			'district': {url: 'http://tbxpolymap.appspot.com/outline-maps/district.kmz', label: 'District'},
+		}
+		
 		var multilayer = $.isArray(descriptions);
 		
 		if (!multilayer) {
@@ -47,7 +58,7 @@
 			}
 		}
 		
-		var legend;
+		var legend, drawer;
 		var kmlLayers = [];
 		
 		function setKmlLayer(layerIndex, preserveViewport) {
@@ -109,10 +120,12 @@
 			};
 			map = new google.maps.Map(mapElem.get(0), myOptions);
 			
+			drawer = $('<div class="drawer"></div>');
 			legend = $('<div class="legend"></div>');
-			map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(legend.get(0));
+			drawer.append(legend);
+			map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(drawer.get(0));
 			/*
-			legend.click(function() {
+			drawer.click(function() {
 				$(this).slideUp();
 			})
 			*/
@@ -124,6 +137,32 @@
 					var url = kmlUrl;
 				}
 				kmlLayers[i] = new google.maps.KmlLayer(url + '?v=3', {'preserveViewport': true});
+			}
+			
+			if (mainDescription.overlays) {
+				var overlayOptions = $('<ul class="overlay-options"></ul>');
+				drawer.append('<h4>Overlays</h4>',overlayOptions);
+				
+				function addOverlay(overlayType) {
+					var overlay = OVERLAY_TYPES[overlayType];
+					var kml = new google.maps.KmlLayer(overlay.url, {'preserveViewport': true});
+					var li = $('<li><input type="checkbox" /><label></label></li>');
+					overlayOptions.append(li);
+					
+					var checkboxId = 'polymap-checkbox-' + (nextId++);
+					li.find('input').attr({'id': checkboxId}).change(function() {
+						if ($(this).is(':checked')) {
+							kml.setMap(map);
+						} else {
+							kml.setMap(null);
+						}
+					})
+					li.find('label').text(overlay.label).attr({'for': checkboxId});
+				}
+				
+				for (var i = 0; i < mainDescription.overlays.length; i++) {
+					addOverlay(mainDescription.overlays[i]);
+				}
 			}
 			
 			setKmlLayer(0, mainDescription.preserveViewport);

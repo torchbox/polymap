@@ -4,7 +4,7 @@ div.google-map {
 	margin-bottom:28px;
 }
 
-div.google-map .legend {
+div.google-map .drawer {
 	border:1px solid #777;
 	background-color:rgba(255,255,255,0.9);
 	font-size: 0.8em;
@@ -12,6 +12,18 @@ div.google-map .legend {
 	height: 380px;
 	line-height: 1.3em;
 	width: 100px;
+}
+
+div.google-map .drawer h4 {
+	margin-bottom: 0.5em;
+}
+div.google-map ul.overlay-options {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+div.google-map ul.overlay-options li label {
+	padding-left: 4px;
 }
 
 div.google-map .map-layer-tabs {
