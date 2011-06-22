@@ -67,27 +67,17 @@
 			
 			legend.empty();
 			if (description.legendTitle) {
-				var legendTitle = $('<h3></h3>').text(description.legendTitle).css({
-					'margin': '0 0 4px 0',
-					'padding': '0'
-				});
+				var legendTitle = $('<h3></h3>').text(description.legendTitle);
 				legend.append(legendTitle);
 			}
 			var legendUl = $('<ul></ul>');
 			legend.append(legendUl);
 			
-			legendUl.css({
-				'padding': '0',
-				'margin': '0',
-				'list-style-type': 'none'
-			})
 			for (var i = 0; i < description.styles.length; i++) {
 				var style = description.styles[i];
 				if (style.label) {
-					var legendItem = $('<li></li>').css({'list-style-image': 'none'}).text(style.label);
+					var legendItem = $('<li></li>').text(style.label);
 					var swatch = $('<span></span>').css({
-						'padding': '0 8px 0 8px',
-						'margin': '0 8px 0 0',
 						'background-color': style.fillColour
 					})
 					legendItem.prepend(swatch);

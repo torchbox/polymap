@@ -29,6 +29,24 @@ div.google-map .drawer .handle {
 	height: 32px;
 }
 
+div.google-map .drawer h3 {
+	margin: 0 0 4px 0;
+	padding: 0;
+}
+
+div.google-map .drawer .legend ul {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+div.google-map .drawer .legend ul li {
+	list-style-image: none;
+}
+div.google-map .drawer .legend ul li span {
+	padding: 0 8px 0 8px;
+	margin: 0 8px 0 0;
+}
+
 div.google-map .drawer h4 {
 	margin-bottom: 0.5em;
 }
