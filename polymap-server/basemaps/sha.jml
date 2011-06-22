@@ -5794,8 +5794,8 @@
                   </gml:polygonMember>
                 </gml:MultiPolygon>
           </geometry>
-          <property name="NAME">Yorkshire and the Humber</property>
-          <property name="SHA_CODE">Q32</property>
+          <property name="NAME">South West</property>
+          <property name="SHA_CODE">Q39</property>
      </feature>
 
      <feature> 
