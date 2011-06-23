@@ -88,8 +88,6 @@
 			for (var i = 0; i < tabLinks.length; i++) {
 				if (i == layerIndex) {
 					tabLinks[i].addClass('current');
-					kmlLayers[i].set('preserveViewport', preserveViewport);
-					kmlLayers[i].setMap(map);
 				} else {
 					tabLinks[i].removeClass('current');
 					try {
@@ -98,6 +96,8 @@
 					}
 				}
 			}
+			kmlLayers[layerIndex].set('preserveViewport', preserveViewport);
+			kmlLayers[layerIndex].setMap(map);
 			
 			for (var i = 0; i < overlayInfo.length; i++) {
 				overlayInfo[i].checkbox.removeAttr('checked');
