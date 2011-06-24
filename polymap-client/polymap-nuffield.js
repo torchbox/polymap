@@ -40,7 +40,7 @@
 		var tabLinks = [];
 		
 		if (descriptions.length > 1) {
-			var tabs = $('<div class="map-layer-tabs">Related maps: <ul></ul></div>');
+			var tabs = $('<div class="map-layer-tabs">Maps in this series: <ul></ul></div>');
 			container.append(tabs);
 			
 			function addTabClick(link, index) {

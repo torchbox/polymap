@@ -16,47 +16,76 @@
 	<div id="map_canvas" class="google-map"></div>
 	<script type="text/javascript">
 		$('#map_canvas').polymap([
-			{
-				"width": 600, "height": 400,
-				"overlays": ['country-sha', 'county'],
-				"tabTitle": "PCT",
-				"boundaries": "pct",
-				"descriptionPrefix": "Rate: ",
-				"descriptionSuffix": "% ",
-				"preserveViewport": false,
-				"legendTitle": "Number of foreign citizens 2011-06-20",
-				"borderWidth": 3,
-				"styles": [
-					{"max": 1.0, "fillColour": "#0000ff", "borderColour": "#8888ff", "opacity": 0.2, "label": "< 1%", "borderWidth": 5},
-					{"max": 2.0, "fillColour": "#00ff00", "label": "1 - 2%"},
-					{"max": 5.0, "fillColour": "#ff0000", "label": "2 - 5%"}
-				],
-				"data": {
-					"5C4": {"value": 1.5, "description": "Crikey, this is <em>region 5C4</em>"}, "5CN": 1.5, "5D8": 1.7, "5EF": 2.6,
-					"5F5": 0.5, "E15000001": 1.5, "E15000002": 1.7, "E15000007": 2.5,
-					"E15000006": 0.5, "E15000004": 1.5, "S15000001": 1.7, "UKN": 2.5
-				}
-			},
-			{
-				"width": 600, "height": 400,
-				"boundaries": "country",
-				"tabTitle": "country",
-				"descriptionPrefix": "Rate: ",
-				"descriptionSuffix": "% ",
-				"preserveViewport": false,
-				"legendTitle": "Number of foreign citizens by country 2011-06-20",
-				"borderWidth": 3,
-				"styles": [
-					{"max": 1.0, "fillColour": "#0000ff", "borderColour": "#8888ff", "opacity": 0.2, "label": "< 1%", "borderWidth": 5},
-					{"max": 2.0, "fillColour": "#00ff00", "label": "1 - 2%"},
-					{"max": 5.0, "fillColour": "#ff0000", "label": "2 - 5%"}
-				],
-				"data": {
-					"E": {"value": 1.5, "description": "Crikey, this is <em>region E</em>"},
-					"S": 0.5, "W": 1.5, "I": 1.7
-				}
-			}
-		], "http://tbxpolymap.appspot.com/kmz/550ce34729ecae9538de99a7167d45f4")
+{
+"width": 784, "height": 551, 
+"boundaries": "country-sha",
+"borderWidth": 1,
+"borderColour": "#7F9DA3",
+"legendTitle": "General practitioners per 1,000 population",
+"tabTitle": "GP numbers",
+"overlays": ["pct","county","district","sha"],
+"opacity":0.8,
+"descriptionPrefix": "GPs: ",
+"descriptionSuffix": " per 1,000 of the population",
+"preserveViewport": true,
+"styles": [
+	{"max": 0.6, "fillColour": "#005567", "label": "< 0.6"},
+{"max": 0.65, "fillColour": "#337785", "label": "< 0.65"}, 
+{"max": 0.7, "fillColour": "#6699a4", "label": "< 0.7"}, 
+{"max": 0.75, "fillColour": "#99bbc2", "label": "< 0.75"}, 
+	{"max": 0.85, "fillColour": "#ccdde1", "label": "< 0.85"}
+],
+"data": {
+"S":0.81,
+"Q39":0.74,
+"Q30":0.71,
+"Q32":0.66,
+"Q36":0.65,
+"Q38":0.65,
+"Q31":0.64,
+"Q35":0.64,
+"I":0.64,
+"Q34":0.63,
+"Q37":0.63,
+"W": 0.63,
+"Q33":0.59
+}
+},
+{
+"width": 784, "height": 551, 
+"boundaries": "country-sha",
+"borderWidth": 1,
+"borderColour": "#7F9DA3",
+"legendTitle": "Available hospital beds per 1,000 population",
+"tabTitle": "Hospital bed numbers",
+"overlays": ["sha"],
+"opacity":0.8,
+"descriptionPrefix": "Beds: ",
+"descriptionSuffix": " per 1,000 of the populatio",
+"preserveViewport": true,
+"styles": [
+	{"max": 3, "fillColour": "#ccdde1", "label": "< 3"},
+{"max": 3.5, "fillColour": "#99bbc2", "label": "< 3.5"}, 
+{"max": 4, "fillColour": "#6699a4", "label": "< 4"}, 
+{"max": 4.5, "fillColour": "#337785", "label": "< 4.5"}, 
+	{"max": 5, "fillColour": "#005567", "label": "< 5"}
+],
+"data": {
+"Q39":3.4,
+"Q30":4.3,
+"Q32":3.5,
+"Q36":3.5,
+"Q38":2.6,
+"Q31":3.5,
+"Q35":2.8,
+"I":4.8,
+"Q34":3.3,
+"Q37":2.8,
+"W": 4.7,
+"Q33":3.0
+}
+}
+], "http://tbxpolymap.appspot.com/kmz/d695f6d87e2a0b93c7710f7ab2c977cc")
 	</script>
 </body>
 </html>
