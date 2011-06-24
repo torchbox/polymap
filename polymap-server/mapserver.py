@@ -263,9 +263,21 @@ class RenderLayerAction(webapp.RequestHandler):
 			self.response.headers["Content-Type"] = "application/vnd.google-earth.kmz"
 			self.response.out.write(map.get_kmz())
 
+# Handler for '/definition/[hash]' requests.
+# Returns the original JSON definition for a map
+class GetDefinitionAction(webapp.RequestHandler):
+	def get(self, hash):
+		map = Map.gql("WHERE hash = :1", hash).get()
+		if not map:
+			self.error(404)
+		else:
+			self.response.headers["Content-Type"] = "text/plain"
+			self.response.out.write(map.description)
+
 application = webapp.WSGIApplication(
 	[
 		('/create', CreateAction),
+		('/definition/(\w+)', GetDefinitionAction),
 		('/kmz/(\w+)', RenderAction),
 		('/kmz/(\w+)/(\d+)', RenderLayerAction),
 	],
