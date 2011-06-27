@@ -19,7 +19,7 @@
 			'country-sha': {url: 'http://tbxpolymap.appspot.com/outline-maps/country-sha.kmz', label: 'SHA'},
 			'pct': {url: 'http://tbxpolymap.appspot.com/outline-maps/pct.kmz', label: 'PCT'},
 			'county': {url: 'http://tbxpolymap.appspot.com/outline-maps/county.kmz', label: 'County'},
-			'district': {url: 'http://tbxpolymap.appspot.com/outline-maps/district.kmz', label: 'District'},
+			'district': {url: 'http://tbxpolymap.appspot.com/outline-maps/district.kmz', label: 'District'}
 		}
 		
 		var multilayer = $.isArray(descriptions);
