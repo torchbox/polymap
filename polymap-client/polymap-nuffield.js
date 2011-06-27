@@ -147,7 +147,7 @@
 				
 				function addOverlay(overlayType) {
 					var overlay = OVERLAY_TYPES[overlayType];
-					var kml = new google.maps.KmlLayer(overlay.url + '?v=2', {'preserveViewport': true, 'suppressInfoWindows': true});
+					var kml = new google.maps.KmlLayer(overlay.url + '?v=3', {'preserveViewport': true, 'suppressInfoWindows': true});
 					var li = $('<li><input type="checkbox" /><label></label></li>');
 					overlayOptions.append(li);
 					
