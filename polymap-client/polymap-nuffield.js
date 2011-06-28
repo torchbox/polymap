@@ -15,11 +15,11 @@
 	$.fn.polymap = function(descriptions, kmlUrl) {
 		
 		var OVERLAY_TYPES = {
-			'sha': {url: 'http://tbxpolymap.appspot.com/outline-maps/country-sha.kmz', label: 'SHA'},
-			'country-sha': {url: 'http://tbxpolymap.appspot.com/outline-maps/country-sha.kmz', label: 'SHA'},
-			'pct': {url: 'http://tbxpolymap.appspot.com/outline-maps/pct.kmz', label: 'PCT'},
-			'county': {url: 'http://tbxpolymap.appspot.com/outline-maps/county.kmz', label: 'County'},
-			'district': {url: 'http://tbxpolymap.appspot.com/outline-maps/district.kmz', label: 'District'}
+			'sha': {url: 'http://tbxpolymap.appspot.com/outline-maps/country-sha.kmz', 'short-name': 'SHAs & UK countries', 'long-name': 'English Strategic Health Authority regions, Scotland, Wales & Northern Ireland'},
+			'country-sha': {url: 'http://tbxpolymap.appspot.com/outline-maps/country-sha.kmz', 'short-name': 'SHAs & UK countries', 'long-name': 'English Strategic Health Authority regions, Scotland, Wales & Northern Ireland'},
+			'pct': {url: 'http://tbxpolymap.appspot.com/outline-maps/pct.kmz', 'short-name': 'PCT or equivalent', 'long-name': 'Primary Care Trust or equivalent'},
+			'county': {url: 'http://tbxpolymap.appspot.com/outline-maps/county.kmz', 'short-name': 'LA: Upper tier', 'long-name': 'Local Authority: Upper tier'},
+			'district': {url: 'http://tbxpolymap.appspot.com/outline-maps/district.kmz', 'short-name': 'LA: Lower tier', 'long-name': 'Local Authority: Lower tier'}
 		}
 		
 		var multilayer = $.isArray(descriptions);
@@ -159,7 +159,7 @@
 							kml.setMap(null);
 						}
 					})
-					li.find('label').text(overlay.label).attr({'for': checkboxId});
+					li.find('label').text(overlay['short-name']).attr({'for': checkboxId, 'title': overlay['long-name']});
 					return {'kml': kml, 'checkbox': li.find('input')};
 				}
 				
